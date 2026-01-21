@@ -14,7 +14,7 @@
   <defs
      id="defs291" />
   <title
-     id="title282">btcpay-monero</title>
+     id="title282">btcpay-beldex</title>
   <g
      id="g1503"
      transform="matrix(0.3368777,0,0,0.3368777,-0.08027797,0)">
@@ -36,7 +36,7 @@
     <rdf:RDF>
       <cc:Work
          rdf:about="">
-        <dc:title>btcpay-monero</dc:title>
+        <dc:title>btcpay-beldex</dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

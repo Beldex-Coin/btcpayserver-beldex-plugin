@@ -1,17 +1,17 @@
 <div align="center">
   
-  [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/btcpay-monero/btcpayserver-monero-plugin/dotnet.yml?branch=master)](https://github.com/btcpay-monero/btcpayserver-monero-plugin/actions)
-  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a86461725075418b95ae501256839500)](https://app.codacy.com/gh/btcpay-monero/btcpayserver-monero-plugin/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-  [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/a86461725075418b95ae501256839500)](https://app.codacy.com/gh/btcpay-monero/btcpayserver-monero-plugin/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
-  [![Matrix rooms](https://img.shields.io/badge/%F0%9F%92%AC%20Matrix-%23btcpay--monero-blue)](https://matrix.to/#/#btcpay-monero:matrix.org)
+  [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/btcpay-beldex/btcpayserver-beldex-plugin/dotnet.yml?branch=master)](https://github.com/btcpay-beldex/btcpayserver-beldex-plugin/actions)
+  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a86461725075418b95ae501256839500)](https://app.codacy.com/gh/btcpay-beldex/btcpayserver-beldex-plugin/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+  [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/a86461725075418b95ae501256839500)](https://app.codacy.com/gh/btcpay-beldex/btcpayserver-beldex-plugin/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+  [![Matrix rooms](https://img.shields.io/badge/%F0%9F%92%AC%20Matrix-%23btcpay--beldex-blue)](https://matrix.to/#/#btcpay-beldex:matrix.org)
 </div>
 
-# Monero BTCPay Server plugin
+# Beldex BTCPay Server plugin
 
-This plugin extends BTCPay Server to enable users to receive payments via Monero.
+This plugin extends BTCPay Server to enable users to receive payments via Beldex.
 
 > [!WARNING]
-> This plugin shares a single Monero wallet across all the stores in the BTCPay Server instance. Use this plugin only if you are not sharing your instance.
+> This plugin shares a single Beldex wallet across all the stores in the BTCPay Server instance. Use this plugin only if you are not sharing your instance.
 
 <p align="center">
   <img src="./img/Checkout.png" alt="Checkout">
@@ -23,20 +23,20 @@ Configure this plugin using the following environment variables:
 
 | Environment variable | Description                                                                                                                                                                                                                                  | Example |
 | --- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --- |
-**BTCPAY_XMR_DAEMON_URI** | **Required**. The URI of the [monerod](https://github.com/monero-project/monero) RPC interface.                                                                                                                                              | http://127.0.0.1:18081 |
-**BTCPAY_XMR_DAEMON_USERNAME** | **Optional**.  The username for authenticating with the daemon.                                                                                                                                                                              | john |
-**BTCPAY_XMR_DAEMON_PASSWORD** | **Optional**. The password for authenticating with the daemon.                                                                                                                                                                               | secret |
-**BTCPAY_XMR_WALLET_DAEMON_URI** | **Required**.  The URI of the [monero-wallet-rpc](https://getmonero.dev/interacting/monero-wallet-rpc.html) RPC interface.                                                                                                                   | http://127.0.0.1:18082 |
-**BTCPAY_XMR_WALLET_DAEMON_WALLETDIR** | **Optional**. The directory where BTCPay Server saves wallet files created via the UI ([See this blog post for more details](https://sethforprivacy.com/guides/accepting-monero-via-btcpay-server/#configure-the-bitcoin-wallet-of-choice)). | /home/cypherpunk/Monero/wallets/ |
+**BTCPAY_BDX_DAEMON_URI** | **Required**. The URI of the [beldexd](https://github.com/beldex-project/beldex) RPC interface.                                                                                                                                              | http://127.0.0.1:18081 |
+**BTCPAY_BDX_DAEMON_USERNAME** | **Optional**.  The username for authenticating with the daemon.                                                                                                                                                                              | john |
+**BTCPAY_BDX_DAEMON_PASSWORD** | **Optional**. The password for authenticating with the daemon.                                                                                                                                                                               | secret |
+**BTCPAY_BDX_WALLET_DAEMON_URI** | **Required**.  The URI of the [beldex-wallet-rpc](https://getbeldex.dev/interacting/beldex-wallet-rpc.html) RPC interface.                                                                                                                   | http://127.0.0.1:18082 |
+**BTCPAY_BDX_WALLET_DAEMON_WALLETDIR** | **Optional**. The directory where BTCPay Server saves wallet files created via the UI ([See this blog post for more details](https://sethforprivacy.com/guides/accepting-beldex-via-btcpay-server/#configure-the-bitcoin-wallet-of-choice)). | /home/cypherpunk/Beldex/wallets/ |
 
-BTCPay Server's Docker deployment simplifies the setup by automatically configuring these variables. For further details, refer to this [blog post](https://sethforprivacy.com/guides/accepting-monero-via-btcpay-server).
+BTCPay Server's Docker deployment simplifies the setup by automatically configuring these variables. For further details, refer to this [blog post](https://sethforprivacy.com/guides/accepting-beldex-via-btcpay-server).
 
 # For maintainers
 
 ## Building and testing
 
 ## Local Development Setup
-If you're contributing to this plugin or running a local development instance of BTCPay Server with the Monero plugin, follow these steps.
+If you're contributing to this plugin or running a local development instance of BTCPay Server with the Beldex plugin, follow these steps.
 ## 1. Requirements
 
 - .NET 8.0 SDK or later
@@ -45,24 +45,24 @@ If you're contributing to this plugin or running a local development instance of
 - Docker and Docker Compose
 
 ## 2. Clone the Repositories
-Create a working directory and clone both the BTCPay Server and Monero plugin repositories side by side:
+Create a working directory and clone both the BTCPay Server and Beldex plugin repositories side by side:
 If you are a developer maintaining this plugin, in order to maintain this plugin, you need to clone this repository with `--recurse-submodules`:
 
 ```bash
 git clone https://github.com/btcpayserver/btcpayserver
-git clone --recurse-submodules https://github.com/btcpay-monero/btcpayserver-monero-plugin
+git clone --recurse-submodules https://github.com/btcpay-beldex/btcpayserver-beldex-plugin
 ```
 ## 3. Build the Plugin
 Navigate to the plugin directory and restore/build the solution:
 ```bash 
-cd btcpayserver-monero-plugin
+cd btcpayserver-beldex-plugin
 dotnet restore
-dotnet build btcpay-monero-plugin.sln
+dotnet build btcpay-beldex-plugin.sln
 ```
 To build and run unit tests, run the following commands:
 
 ```bash
-dotnet build btcpay-monero-plugin.sln
+dotnet build btcpay-beldex-plugin.sln
 dotnet test BTCPayServer.Plugins.UnitTests --verbosity normal
 ```
 To run unit tests with coverage, install JetBrains dotCover CLI:
@@ -79,7 +79,7 @@ dotCover cover-dotnet --TargetArguments="test BTCPayServer.Plugins.UnitTests --n
 To build and run integration tests, run the following commands:
 
 ```bash
-dotnet build btcpay-monero-plugin.sln
+dotnet build btcpay-beldex-plugin.sln
 docker compose -f BTCPayServer.Plugins.IntegrationTests/docker-compose.yml run tests
 ```
 
@@ -87,7 +87,7 @@ docker compose -f BTCPayServer.Plugins.IntegrationTests/docker-compose.yml run t
 
 We use the **unmodified** standardized `.editorconfig` from .NET SDK. Run `dotnet new editorconfig --force` to apply the latest version.
 
-To enforce formatting for the whole project, run `dotnet format btcpay-monero-plugin.sln --exclude submodules/* --verbosity diagnostic`
+To enforce formatting for the whole project, run `dotnet format btcpay-beldex-plugin.sln --exclude submodules/* --verbosity diagnostic`
 
 To enforce custom analyzer configuration options, we do use global _AnalyzerConfig_ `.globalconfig` file.
 
@@ -99,9 +99,9 @@ Then create the `appsettings.dev.json` file in `btcpayserver/BTCPayServer`, with
 
 ```json
 {
-  "DEBUG_PLUGINS": "..\\..\\Plugins\\Monero\\bin\\Debug\\net8.0\\BTCPayServer.Plugins.Monero.dll",
-  "XMR_DAEMON_URI": "http://127.0.0.1:18081",
-  "XMR_WALLET_DAEMON_URI": "http://127.0.0.1:18082"
+  "DEBUG_PLUGINS": "..\\..\\Plugins\\Beldex\\bin\\Debug\\net8.0\\BTCPayServer.Plugins.Beldex.dll",
+  "BDX_DAEMON_URI": "http://127.0.0.1:18081",
+  "BDX_WALLET_DAEMON_URI": "http://127.0.0.1:18082"
 }
 ```
 This will ensure that BTCPay Server loads the plugin when it starts.
@@ -132,24 +132,24 @@ Visual Studio does not support this feature.
 
 BTCPay Server maintains its own [deployment stack project](https://github.com/btcpayserver/btcpayserver-docker) to enable users to easily update or deploy additional infrastructure (such as nodes).
 
-Monero nodes are defined in this [Docker Compose file](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/monero.yml).
+Beldex nodes are defined in this [Docker Compose file](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/beldex.yml).
 
-The Monero images are also maintained in the [dockerfile-deps repository](https://github.com/btcpayserver/dockerfile-deps/tree/master/Monero). While using the `dockerfile-deps` for future versions of Monero Dockerfiles is optional, maintaining [the Docker Compose Fragment](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/monero.yml) is necessary.
+The Beldex images are also maintained in the [dockerfile-deps repository](https://github.com/btcpayserver/dockerfile-deps/tree/master/Beldex). While using the `dockerfile-deps` for future versions of Beldex Dockerfiles is optional, maintaining [the Docker Compose Fragment](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/beldex.yml) is necessary.
 
 
-Users can install Monero by configuring the `BTCPAYGEN_CRYPTOX` environment variables.
+Users can install Beldex by configuring the `BTCPAYGEN_CRYPTOX` environment variables.
 
 For example, after ensuring `BTCPAYGEN_CRYPTO2` is not already assigned to another cryptocurrency:
 ```bash
-BTCPAYGEN_CRYPTO2="xmr"
+BTCPAYGEN_CRYPTO2="bdx"
 . btcpay-setup.sh -i
 ```
 
-This will automatically configure Monero in their deployment stack. Users can then run `btcpay-update.sh` to pull updates for the infrastructure.
+This will automatically configure Beldex in their deployment stack. Users can then run `btcpay-update.sh` to pull updates for the infrastructure.
 
-Note: Adding Monero to the infrastructure is not recommended for non-advanced users. If the server specifications are insufficient, it may become unresponsive.
+Note: Adding Beldex to the infrastructure is not recommended for non-advanced users. If the server specifications are insufficient, it may become unresponsive.
 
-Lunanode, a VPS provider, offers an [easy way to provision the infrastructure](https://docs.btcpayserver.org/Deployment/LunaNode/) for BTCPay Server, then it installs the Docker Compose deployment on the provisioned VPS. The user can select Monero during provisioning, then the resulting VPS have a Monero deployed automatically, without the need for the user to use the command line. (But the user will still need to install this plugin manually)
+Lunanode, a VPS provider, offers an [easy way to provision the infrastructure](https://docs.btcpayserver.org/Deployment/LunaNode/) for BTCPay Server, then it installs the Docker Compose deployment on the provisioned VPS. The user can select Beldex during provisioning, then the resulting VPS have a Beldex deployed automatically, without the need for the user to use the command line. (But the user will still need to install this plugin manually)
 
 # Licence
 

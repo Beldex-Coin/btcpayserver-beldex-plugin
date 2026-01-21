@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-We currently support the following versions of the Monero plugin for BTCPayServer:
+We currently support the following versions of the Beldex plugin for BTCPayServer:
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -17,7 +17,7 @@ Please **do not** create public GitHub issues or pull requests for security-rela
 
 Instead, report it privately by contacting repository admins:
 
-- Matrix: [#btcpay-monero:matrix.org](https://matrix.to/#/#btcpay-monero:matrix.org)
+- Matrix: [#btcpay-beldex:matrix.org](https://matrix.to/#/#btcpay-beldex:matrix.org)
 
 Include as much information as possible:
 - Vulnerability description

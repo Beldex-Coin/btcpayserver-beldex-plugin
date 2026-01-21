@@ -29,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Plugins\Monero\BTCPayServer.Plugins.Monero.csproj" />
+        <ProjectReference Include="..\Plugins\Beldex\BTCPayServer.Plugins.Beldex.csproj" />
         <ProjectReference Include="..\submodules\btcpayserver\BTCPayServer.Abstractions\BTCPayServer.Abstractions.csproj" />
     </ItemGroup>
 

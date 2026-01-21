@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   report-coverage:
-    if: github.repository == 'btcpay-monero/btcpayserver-monero-plugin'
+    if: github.repository == 'btcpay-beldex/btcpayserver-beldex-plugin'
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage report
