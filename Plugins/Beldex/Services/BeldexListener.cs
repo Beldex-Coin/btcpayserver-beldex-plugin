@@ -29,7 +29,7 @@ namespace BTCPayServer.Plugins.Beldex.Services
     {
         private readonly InvoiceRepository _invoiceRepository;
         private readonly EventAggregator _eventAggregator;
-        private readonly BeldexRPCProvider _beldexRpcProvider;
+        private readonly BeldexRpcProvider _beldexRpcProvider;
         private readonly BeldexLikeConfiguration _BeldexLikeConfiguration;
         private readonly BTCPayNetworkProvider _networkProvider;
         private readonly ILogger<BeldexListener> _logger;
@@ -39,7 +39,7 @@ namespace BTCPayServer.Plugins.Beldex.Services
 
         public BeldexListener(InvoiceRepository invoiceRepository,
             EventAggregator eventAggregator,
-            BeldexRPCProvider beldexRpcProvider,
+            BeldexRpcProvider beldexRpcProvider,
             BeldexLikeConfiguration beldexLikeConfiguration,
             BTCPayNetworkProvider networkProvider,
             ILogger<BeldexListener> logger,
@@ -62,12 +62,12 @@ namespace BTCPayServer.Plugins.Beldex.Services
         {
             base.SubscribeToEvents();
             Subscribe<BeldexEvent>();
-            Subscribe<BeldexRPCProvider.BeldexDaemonStateChange>();
+            Subscribe<BeldexRpcProvider.BeldexDaemonStateChange>();
         }
 
         protected override async Task ProcessEvent(object evt, CancellationToken cancellationToken)
         {
-            if (evt is BeldexRPCProvider.BeldexDaemonStateChange stateChange)
+            if (evt is BeldexRpcProvider.BeldexDaemonStateChange stateChange)
             {
                 if (_beldexRpcProvider.IsAvailable(stateChange.CryptoCode))
                 {

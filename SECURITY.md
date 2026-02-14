@@ -6,7 +6,7 @@ We currently support the following versions of the Beldex plugin for BTCPayServe
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.x     | ✅ Yes             |
+| 1.1.x     | ✅ Yes             |
 | 1.x     | ❌ No              |
 
 ## Reporting a Vulnerability

@@ -27,9 +27,9 @@ ENV SCREEN_HEIGHT 600 \
 COPY . .
 
 ARG CONFIGURATION_NAME=Release
-ARG MONERO_PLUGIN_FOLDER=/root/.btcpayserver/Plugins/BTCPayServer.Plugins.Beldex/
-RUN mkdir -p ${MONERO_PLUGIN_FOLDER}
-RUN cd Plugins/Beldex && dotnet build BTCPayServer.Plugins.Beldex.sln --configuration ${CONFIGURATION_NAME} /p:RazorCompileOnBuild=true --output ${MONERO_PLUGIN_FOLDER}
+ARG BELDEX_PLUGIN_FOLDER=/root/.btcpayserver/Plugins/BTCPayServer.Plugins.Beldex/
+RUN mkdir -p ${BELDEX_PLUGIN_FOLDER}
+RUN cd Plugins/Beldex && dotnet build BTCPayServer.Plugins.Beldex.sln --configuration ${CONFIGURATION_NAME} /p:RazorCompileOnBuild=true --output ${BELDEX_PLUGIN_FOLDER}
 RUN cd BTCPayServer.Plugins.IntegrationTests && dotnet build --configuration ${CONFIGURATION_NAME} /p:CI_TESTS=true /p:RazorCompileOnBuild=true
 RUN dotnet tool install --global Microsoft.Playwright.CLI
 RUN dotnet tool install --global JetBrains.DotCover.CommandLineTools --version 2025.1.6

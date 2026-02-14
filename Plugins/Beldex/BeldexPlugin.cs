@@ -44,10 +44,13 @@ public class BeldexPlugin : BaseBTCPayServerPlugin
             Divisibility = 5,   // Beldex has 9 decimal places but Beldex wallets generally use 5 decimal places
             DefaultRateRules = new[]
             {
-                    "BDX_X   = BDX_BTC * BTC_X",
-                    "BDX_BTC = hitbtc(BDX_BTC)",
-                    "BTC_X   = kraken(BTC_X)"
-                },
+                "BDX_USD = kraken(BDX_USD)",
+                "BTC_USD = kraken(BTC_USD)",
+                "BTC_X   = kraken(BTC_X)",
+
+                "BDX_BTC = BDX_USD / BTC_USD",
+                "BDX_X   = BDX_BTC * BTC_X"
+            },
             CryptoImagePath = "beldex.svg",
             UriScheme = "beldex"
         };
@@ -76,9 +79,10 @@ public class BeldexPlugin : BaseBTCPayServerPlugin
                     PreAuthenticate = true
                 };
             });
-        services.AddSingleton<BeldexRPCProvider>();
+        services.AddSingleton<BeldexRpcProvider>();
         services.AddHostedService<BeldexLikeSummaryUpdaterHostedService>();
         services.AddHostedService<BeldexListener>();
+        services.AddHostedService<BeldexLoadUpService>();
         services.AddSingleton(provider =>
                 (IPaymentMethodHandler)ActivatorUtilities.CreateInstance(provider, typeof(BeldexLikePaymentMethodHandler), network));
         services.AddSingleton(provider =>

@@ -1,7 +1,7 @@
 {
   "Identifier": "BTCPayServer.Plugins.Beldex",
   "Name": "BTCPay Server: Beldex support plugin",
-  "Version": "1.0.1.0",
+  "Version": "1.1.0",
   "Description": "This plugin extends BTCPay Server to enable users to receive payments via Beldex.",
   "SystemPlugin": false,
   "Dependencies": [

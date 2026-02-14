@@ -12,13 +12,13 @@ namespace BTCPayServer.Plugins.Beldex.Services
 {
     public class BeldexLikeSummaryUpdaterHostedService : IHostedService
     {
-        private readonly BeldexRPCProvider _BeldexRpcProvider;
+        private readonly BeldexRpcProvider _BeldexRpcProvider;
         private readonly BeldexLikeConfiguration _beldexLikeConfiguration;
 
         public Logs Logs { get; }
 
         private CancellationTokenSource _Cts;
-        public BeldexLikeSummaryUpdaterHostedService(BeldexRPCProvider beldexRpcProvider, BeldexLikeConfiguration beldexLikeConfiguration, Logs logs)
+        public BeldexLikeSummaryUpdaterHostedService(BeldexRpcProvider beldexRpcProvider, BeldexLikeConfiguration beldexLikeConfiguration, Logs logs)
         {
             _BeldexRpcProvider = beldexRpcProvider;
             _beldexLikeConfiguration = beldexLikeConfiguration;

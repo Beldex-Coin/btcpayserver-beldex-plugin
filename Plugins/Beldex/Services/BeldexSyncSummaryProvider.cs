@@ -9,9 +9,9 @@ namespace BTCPayServer.Plugins.Beldex.Services
 {
     public class BeldexSyncSummaryProvider : ISyncSummaryProvider
     {
-        private readonly BeldexRPCProvider _beldexRpcProvider;
+        private readonly BeldexRpcProvider _beldexRpcProvider;
 
-        public BeldexSyncSummaryProvider(BeldexRPCProvider beldexRpcProvider)
+        public BeldexSyncSummaryProvider(BeldexRpcProvider beldexRpcProvider)
         {
             _beldexRpcProvider = beldexRpcProvider;
         }
@@ -42,6 +42,6 @@ namespace BTCPayServer.Plugins.Beldex.Services
             }
         }
 
-        public BeldexRPCProvider.BeldexLikeSummary Summary { get; set; }
+        public BeldexRpcProvider.BeldexLikeSummary Summary { get; set; }
     }
 }

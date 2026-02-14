@@ -17,11 +17,11 @@ namespace BTCPayServer.Plugins.Beldex.Payments
         private readonly BeldexLikeSpecificBtcPayNetwork _network;
         public BeldexLikeSpecificBtcPayNetwork Network => _network;
         public JsonSerializer Serializer { get; }
-        private readonly BeldexRPCProvider _beldexRpcProvider;
+        private readonly BeldexRpcProvider _beldexRpcProvider;
 
         public PaymentMethodId PaymentMethodId { get; }
 
-        public BeldexLikePaymentMethodHandler(BeldexLikeSpecificBtcPayNetwork network, BeldexRPCProvider beldexRpcProvider)
+        public BeldexLikePaymentMethodHandler(BeldexLikeSpecificBtcPayNetwork network, BeldexRpcProvider beldexRpcProvider)
         {
             PaymentMethodId = PaymentTypes.CHAIN.GetPaymentMethodId(network.CryptoCode);
             _network = network;

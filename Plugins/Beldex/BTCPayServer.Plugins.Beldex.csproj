@@ -8,7 +8,7 @@
   <PropertyGroup>
     <Product>BTCPay Server: Beldex support plugin</Product>
     <Description>This plugin extends BTCPay Server to enable users to receive payments via Beldex.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 

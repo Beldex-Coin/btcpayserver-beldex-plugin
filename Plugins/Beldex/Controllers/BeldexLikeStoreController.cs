@@ -33,12 +33,12 @@ namespace BTCPayServer.Plugins.Beldex.Controllers
     {
         private readonly BeldexLikeConfiguration _BeldexLikeConfiguration;
         private readonly StoreRepository _StoreRepository;
-        private readonly BeldexRPCProvider _BeldexRpcProvider;
+        private readonly BeldexRpcProvider _BeldexRpcProvider;
         private readonly PaymentMethodHandlerDictionary _handlers;
         private IStringLocalizer StringLocalizer { get; }
 
         public UIBeldexLikeStoreController(BeldexLikeConfiguration beldexLikeConfiguration,
-            StoreRepository storeRepository, BeldexRPCProvider beldexRpcProvider,
+            StoreRepository storeRepository, BeldexRpcProvider beldexRpcProvider,
             PaymentMethodHandlerDictionary handlers,
             IStringLocalizer stringLocalizer)
         {
@@ -219,9 +219,8 @@ namespace BTCPayServer.Plugins.Beldex.Controllers
                         {
                             PrimaryAddress = viewModel.PrimaryAddress,
                             PrivateViewKey = viewModel.PrivateViewKey,
-                            WalletFileName = "view_wallet",
+                            WalletFileName = "wallet",
                             RestoreHeight = viewModel.RestoreHeight,
-                            Password = viewModel.WalletPassword
                         });
                         if (response?.Error != null)
                         {
@@ -286,7 +285,7 @@ namespace BTCPayServer.Plugins.Beldex.Controllers
 
         public class BeldexLikePaymentMethodViewModel : IValidatableObject
         {
-            public BeldexRPCProvider.BeldexLikeSummary Summary { get; set; }
+            public BeldexRpcProvider.BeldexLikeSummary Summary { get; set; }
             public string CryptoCode { get; set; }
             public string NewAccountLabel { get; set; }
             public long AccountIndex { get; set; }
@@ -300,8 +299,6 @@ namespace BTCPayServer.Plugins.Beldex.Controllers
             public string PrivateViewKey { get; set; }
             [Display(Name = "Restore Height")]
             public int RestoreHeight { get; set; }
-            [Display(Name = "Wallet Password")]
-            public string WalletPassword { get; set; }
             [Display(Name = "Consider the invoice settled when the payment transaction …")]
             public BeldexLikeSettlementThresholdChoice SettlementConfirmationThresholdChoice { get; set; }
             [Display(Name = "Required Confirmations"), Range(0, 100)]

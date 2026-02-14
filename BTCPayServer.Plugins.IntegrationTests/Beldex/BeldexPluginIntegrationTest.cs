@@ -1,9 +1,7 @@
-using System.Diagnostics;
-
+using BTCPayServer.Plugins.Beldex.RPC.Models;
 using BTCPayServer.Plugins.Beldex.Services;
 using BTCPayServer.Rating;
 using BTCPayServer.Services.Rates;
-using BTCPayServer.Tests;
 using BTCPayServer.Tests.Mocks;
 
 using Xunit;
@@ -14,7 +12,7 @@ namespace BTCPayServer.Plugins.IntegrationTests.Beldex;
 public class BeldexPluginIntegrationTest(ITestOutputHelper helper) : BeldexAndBitcoinIntegrationTestBase(helper)
 {
     [Fact]
-    public async Task EnableBeldexPluginSuccessfully()
+    public async Task ShouldEnableBeldexPluginSuccessfully()
     {
         await using var s = CreatePlaywrightTester();
         await s.StartAsync();
@@ -46,7 +44,6 @@ public class BeldexPluginIntegrationTest(ITestOutputHelper helper) : BeldexAndBi
         await s.Page.Locator("input#PrivateViewKey")
             .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
-        await s.Page.Locator("input#WalletPassword").FillAsync("pass123");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         await s.Page.CheckAsync("#Enabled");
         await s.Page.SelectOptionAsync("#SettlementConfirmationThresholdChoice", "2");
@@ -104,7 +101,7 @@ public class BeldexPluginIntegrationTest(ITestOutputHelper helper) : BeldexAndBi
         await s.Page.SelectOptionAsync("#SettlementConfirmationThresholdChoice", "3");
         await s.Page.ClickAsync("#SaveButton");
 
-        await CleanUp(s);
+        await IntegrationTestUtils.CleanUpAsync(s);
     }
 
     [Fact]
@@ -121,7 +118,6 @@ public class BeldexPluginIntegrationTest(ITestOutputHelper helper) : BeldexAndBi
         await s.Page.Locator("input#PrivateViewKey")
             .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
-        await s.Page.Locator("input#WalletPassword").FillAsync("pass123");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         var errorText = await s.Page
             .Locator("div.validation-summary-errors li")
@@ -129,64 +125,77 @@ public class BeldexPluginIntegrationTest(ITestOutputHelper helper) : BeldexAndBi
 
         Assert.Equal("Could not generate view wallet from keys: Failed to parse public address", errorText);
 
-        await CleanUp(s);
+        await IntegrationTestUtils.CleanUpAsync(s);
     }
 
-    private static async Task CleanUp(PlaywrightTester playwrightTester)
+    [Fact]
+    public async Task ShouldFailWhenWalletFileAlreadyExists()
     {
-        BeldexRPCProvider beldexRpcProvider = playwrightTester.Server.PayTester.GetService<BeldexRPCProvider>();
-        if (beldexRpcProvider.IsAvailable("BDX"))
-        {
-            await beldexRpcProvider.CloseWallet("BDX");
-            await beldexRpcProvider.UpdateSummary("BDX");
-        }
+        await using var s = CreatePlaywrightTester();
+        await s.StartAsync();
 
-        if (playwrightTester.Server.PayTester.InContainer)
+        BeldexRpcProvider BeldexRpcProvider = s.Server.PayTester.GetService<BeldexRpcProvider>();
+        await BeldexRpcProvider.WalletRpcClients["BDX"].SendCommandAsync<GenerateFromKeysRequest, GenerateFromKeysResponse>("generate_from_keys", new GenerateFromKeysRequest
         {
-            beldexRpcProvider.DeleteWallet();
-        }
-        else
-        {
-            await RemoveWalletFromLocalDocker();
-        }
+            PrimaryAddress = "43Pnj6ZKGFTJhaLhiecSFfLfr64KPJZw7MyGH73T6PTDekBBvsTAaWEUSM4bmJqDuYLizhA13jQkMRPpz9VXBCBqQQb6y5L",
+            PrivateViewKey = "1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e",
+            WalletFileName = "wallet",
+            Password = ""
+        });
+        await BeldexRpcProvider.CloseWallet("BDX");
+
+        await s.RegisterNewUser(true);
+        await s.CreateNewStore();
+        await s.Page.Locator("a.nav-link[href*='beldexlike/BDX']").ClickAsync();
+        await s.Page.Locator("input#PrimaryAddress")
+            .FillAsync("43Pnj6ZKGFTJhaLhiecSFfLfr64KPJZw7MyGH73T6PTDekBBvsTAaWEUSM4bmJqDuYLizhA13jQkMRPpz9VXBCBqQQb6y5L");
+        await s.Page.Locator("input#PrivateViewKey")
+            .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
+        await s.Page.Locator("input#RestoreHeight").FillAsync("0");
+        await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
+        var errorText = await s.Page
+            .Locator("div.validation-summary-errors li")
+            .InnerTextAsync();
+
+        Assert.Equal("Could not generate view wallet from keys: Wallet already exists.", errorText);
+        await IntegrationTestUtils.CleanUpAsync(s);
     }
 
-    static async Task RemoveWalletFromLocalDocker()
+    [Fact]
+    public async Task ShouldLoadViewWalletOnStartUpIfExists()
     {
-        try
-        {
-            var removeWalletFromDocker = new ProcessStartInfo
-            {
-                FileName = "docker",
-                Arguments = "exec bdx_wallet sh -c \"rm -rf /wallet/*\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            };
+        await using var s = CreatePlaywrightTester();
+        await IntegrationTestUtils.CopyWalletFilesToBeldexRpcDirAsync(s, "wallet");
+        await s.StartAsync();
+        await s.RegisterNewUser(true);
+        await s.CreateNewStore();
+        await s.Page.Locator("a.nav-link[href*='beldexlike/BDX']").ClickAsync();
 
-            using var process = Process.Start(removeWalletFromDocker);
-            if (process is null)
-            {
-                return;
-            }
+        var walletRpcIsAvailable = await s.Page
+            .Locator("li.list-group-item:text('Wallet RPC available: True')")
+            .InnerTextAsync();
 
-            var stdout = await process.StandardOutput.ReadToEndAsync();
-            var stderr = await process.StandardError.ReadToEndAsync();
+        Assert.Contains("Wallet RPC available: True", walletRpcIsAvailable);
 
-            await process.WaitForExitAsync();
+        await IntegrationTestUtils.CleanUpAsync(s);
+    }
 
-            if (!string.IsNullOrWhiteSpace(stdout))
-            {
-                Console.WriteLine(stdout);
-            }
+    [Fact]
+    public async Task ShouldLoadViewWalletWithPasswordOnStartUpIfExists()
+    {
+        await using var s = CreatePlaywrightTester();
+        await IntegrationTestUtils.CopyWalletFilesToBeldexRpcDirAsync(s, "wallet_password");
+        await s.StartAsync();
+        await s.RegisterNewUser(true);
+        await s.CreateNewStore();
+        await s.Page.Locator("a.nav-link[href*='beldexlike/BDX']").ClickAsync();
 
-            if (!string.IsNullOrWhiteSpace(stderr))
-            {
-                Console.WriteLine(stderr);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Cleanup failed: {ex}");
-        }
+        var walletRpcIsAvailable = await s.Page
+            .Locator("li.list-group-item:text('Wallet RPC available: True')")
+            .InnerTextAsync();
+
+        Assert.Contains("Wallet RPC available: True", walletRpcIsAvailable);
+
+        await IntegrationTestUtils.CleanUpAsync(s);
     }
 }
