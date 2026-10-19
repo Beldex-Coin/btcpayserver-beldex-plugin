@@ -31,6 +31,21 @@ public class BeldexPlugin : BaseBTCPayServerPlugin
         new IBTCPayServerPlugin.PluginDependency { Identifier = nameof(BTCPayServer), Condition = ">=2.1.0" }
     };
 
+    /// <summary>
+    /// Default rate rules for BDX.
+    /// Kraken delisted BDX (api.kraken.com returns "EQuery:Unknown asset pair"), so BDX is
+    /// priced on MEXC via BTC on the same venue, then chained to fiat through Kraken's BTC pairs.
+    /// </summary>
+    public static readonly string[] DefaultBdxRateRules =
+    {
+        "BDX_BTC = mexc(BDX_USDT) / mexc(BTC_USDT)",
+        "BTC_USD = kraken(BTC_USD)",
+        "BTC_X   = kraken(BTC_X)",
+
+        "BDX_USD = BDX_BTC * BTC_USD",
+        "BDX_X   = BDX_BTC * BTC_X"
+    };
+
     public override void Execute(IServiceCollection services)
     {
         var pluginServices = (PluginServiceCollection)services;
@@ -42,15 +57,7 @@ public class BeldexPlugin : BaseBTCPayServerPlugin
             CryptoCode = "BDX",
             DisplayName = "Beldex",
             Divisibility = 5,   // Beldex has 9 decimal places but Beldex wallets generally use 5 decimal places
-            DefaultRateRules = new[]
-            {
-                "BDX_USD = kraken(BDX_USD)",
-                "BTC_USD = kraken(BTC_USD)",
-                "BTC_X   = kraken(BTC_X)",
-
-                "BDX_BTC = BDX_USD / BTC_USD",
-                "BDX_X   = BDX_BTC * BTC_X"
-            },
+            DefaultRateRules = DefaultBdxRateRules,
             CryptoImagePath = "beldex.svg",
             UriScheme = "beldex"
         };
@@ -61,6 +68,8 @@ public class BeldexPlugin : BaseBTCPayServerPlugin
         services.AddDefaultPrettyName(pmi, network.DisplayName);
         services.AddBTCPayNetwork(network)
                 .AddTransactionLinkProvider(pmi, new SimpleTransactionLinkProvider(blockExplorerLink));
+        // Exposes "mexc" to the rate rules above and to the store rate-source list.
+        services.AddRateProvider<MexcRateProvider>();
 
 
         services.AddSingleton(provider =>
